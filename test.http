@@ -1,0 +1,2 @@
+### 로그 요청
+GET http://localhost:8080/logs
