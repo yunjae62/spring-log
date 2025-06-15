@@ -30,5 +30,5 @@
 3. 매 분당 분 단위 파일이 `/var/log/app/docker` 디렉토리에 만들어짐.
     - 로그가 없으면 로그 파일은 만들어지지 않음
     - 보통은 일 단위로 파일을 저장함
-    - 도커파일의 volume에서 로컬의 `/var/log/app/docker`와 컨테이너 내의 `/var/log/app`과 매핑됨
+    - 도커 컴포즈의 volume에서 로컬의 `/var/log/app/docker`와 컨테이너 내의 `/var/log/app`과 매핑됨
 4. 루트 디렉토리의 `test.http` 파일로 로그 HTTP 요청을 보내면 MDC requestId 확인 가능 (UUID 8자리)
