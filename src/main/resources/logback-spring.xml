@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <!-- 로그 파일 저장 경로 -->
+  <property name="LOG_PATH" value="/var/log/app" />
+  <property name="LOG_FILE" value="app.log" />
+
+  <!-- 파일 출력 Appender -->
+  <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+    <!-- 날짜 기반 롤링 정책 -->
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- 롤링 파일 이름 패턴 -->
+      <fileNamePattern>${LOG_PATH}/app.%d{yyyy-MM-dd_HH-mm}.log</fileNamePattern>
+      <!-- 보관 주기 -->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+
+    <!-- 로그 포맷 -->
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [%X{requestId}] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 콘솔 출력도 원한다면 (선택) -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 루트 로거: INFO 이상, 파일 저장 + 콘솔 출력 -->
+  <root level="INFO">
+    <appender-ref ref="ROLLING_FILE" />
+    <appender-ref ref="CONSOLE" />
+  </root>
+
+</configuration>
