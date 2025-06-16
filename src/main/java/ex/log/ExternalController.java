@@ -18,7 +18,7 @@ public class ExternalController {
 
     @GetMapping("/external-api")
     public ResponseEntity<?> externalApi() {
-        log.warn("externalApi called");
+        log.info("externalApi called");
         return ResponseEntity.internalServerError().build();
     }
 
