@@ -1,3 +1,27 @@
 spring:
   application:
     name: log-service
+
+resilience4j:
+  retry:
+    retry-aspect-order: 2 # 리트라이(2) 이후 서킷브레이커(1) 진행
+    instances:
+      externalApi:
+        max-attempts: 3  # 총 요청 시도 횟수 (요청 1회 + 재시도 2회)
+        wait-duration: 500ms  # 재시도 간의 대기 시간 (고정 간격)
+      #        retry-exceptions:
+      #          - java.lang.Exception
+      ignore-exceptions:
+        - org.springframework.web.client.HttpClientErrorException  # 4xx 계열 오류는 재시도하지 않음
+
+  circuitbreaker:
+    circuit-breaker-aspect-order: 1 # 리트라이(2) 이후 서킷브레이커(1) 진행
+    instances:
+      externalApi:
+        failure-rate-threshold: 50  # 실패율이 50% 이상일 경우 회로 차단 (OPEN 상태 전환)
+        sliding-window-size: 10  # 최근 10개의 요청을 기준으로 실패율을 계산
+        sliding-window-type: count_based  # 고정된 요청 수 기준의 슬라이딩 윈도우 방식
+        minimum-number-of-calls: 5  # 회로 차단 판단을 위해 최소 5건 이상의 호출이 있어야 함
+        wait-duration-in-open-state: 10s  # OPEN 상태 유지 시간 (이후 Half-Open으로 전환)
+        permitted-number-of-calls-in-half-open-state: 2  # Half-Open 상태에서 허용되는 테스트 요청 수
+        automatic-transition-from-open-to-half-open-enabled: true  # Open 상태에서 일정 시간 후 자동으로 Half-Open 상태로 전환됨
