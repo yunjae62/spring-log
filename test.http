@@ -1,2 +1,5 @@
 ### 로그 요청
 GET http://localhost:8080/logs
+
+### 외부 시스템 요청
+GET http://localhost:8080/external
