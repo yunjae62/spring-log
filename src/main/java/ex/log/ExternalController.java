@@ -1,5 +1,6 @@
 package ex.log;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class ExternalController {
 
     private String fallback(Throwable t) {
         log.warn("Fallback activated due to: {}", t.toString());
+        return "기본 응답 (Fallback)";
+    }
+
+    private String fallback(CallNotPermittedException e) {
+        log.error("서킷브레이커 OPEN");
         return "기본 응답 (Fallback)";
     }
 }
